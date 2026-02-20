@@ -193,15 +193,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     OnboardingCompleted event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthLoading());
-    try {
-      await _authRepository.saveUserProfile(event.user);
-      emit(Authenticated(event.user));
-    } catch (e, st) {
-      debugPrint('AuthBloc._onOnboardingCompleted error: $e');
-      debugPrint('$st');
-      emit(AuthError(_friendlyError(e)));
-    }
+    emit(Authenticated(event.user));
   }
 
   String _friendlyError(Object e) {

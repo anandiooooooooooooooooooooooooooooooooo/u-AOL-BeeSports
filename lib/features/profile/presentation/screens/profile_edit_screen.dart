@@ -19,6 +19,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final Set<SportType> _selectedSports = {};
   final Map<SportType, SkillLevel> _skillLevels = {};
   bool _initialized = false;
+  ProfileEntity? _currentProfile;
 
   @override
   void dispose() {
@@ -46,8 +47,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundDark,
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(
+            color: AppColors.textPrimaryDark,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        backgroundColor: AppColors.backgroundDark,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: AppColors.textPrimaryDark),
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
@@ -70,59 +81,172 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           }
         },
         builder: (context, state) {
-          ProfileEntity? profile;
-          if (state is ProfileLoaded) profile = state.profile;
-          if (state is ProfileUpdateSuccess) profile = state.profile;
+          final isLoading = state is ProfileLoading;
 
-          if (profile == null) {
-            return const Center(child: CircularProgressIndicator());
+          if (state is ProfileLoaded) _currentProfile = state.profile;
+          if (state is ProfileUpdateSuccess) _currentProfile = state.profile;
+
+          if (_currentProfile == null) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            );
           }
 
-          _initFromProfile(profile);
+          _initFromProfile(_currentProfile!);
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'Bio',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                // Avatar Header
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.primary, width: 2),
                   ),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  controller: _bioController,
-                  maxLines: 3,
-                  maxLength: 150,
-                  decoration: const InputDecoration(
-                    hintText: 'Tell others about yourself...',
-                  ),
-                ),
-                const SizedBox(height: 24),
-                const Text(
-                  'Sport Preferences',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                  child: Container(
+                    width: 90,
+                    height: 90,
+                    decoration: const BoxDecoration(
+                      color: AppColors.cardDark,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        (_currentProfile!.fullName ?? 'U')[0].toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
+                Text(
+                  _currentProfile!.fullName ?? 'Unknown',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimaryDark,
+                  ),
+                ),
+                Text(
+                  _currentProfile!.email,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textPrimaryDark.withValues(alpha: 0.6),
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // Form Section
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Bio',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimaryDark,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.cardDark,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.textPrimaryDark.withValues(alpha: 0.05),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: TextFormField(
+                    controller: _bioController,
+                    maxLines: 4,
+                    maxLength: 150,
+                    style: const TextStyle(color: AppColors.textPrimaryDark),
+                    decoration: InputDecoration(
+                      hintText:
+                          'Tell others about yourself and your play style...',
+                      hintStyle: TextStyle(
+                        color: AppColors.textPrimaryDark.withValues(alpha: 0.3),
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.all(16),
+                      counterStyle: TextStyle(
+                        color: AppColors.textPrimaryDark.withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Sport Preferences',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimaryDark,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: 12,
+                  runSpacing: 12,
                   children: SportType.values.map((sport) {
                     final isSelected = _selectedSports.contains(sport);
-                    return FilterChip(
+                    return ChoiceChip(
                       selected: isSelected,
-                      label: Text(sport.label),
-                      avatar: Icon(sport.icon,
-                          size: 18,
-                          color: isSelected ? sport.color : Colors.white54),
-                      selectedColor: sport.color.withValues(alpha: 0.2),
-                      checkmarkColor: sport.color,
+                      showCheckmark: false,
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            sport.icon,
+                            size: 18,
+                            color: isSelected
+                                ? AppColors.textPrimaryDark
+                                : AppColors.textPrimaryDark
+                                    .withValues(alpha: 0.5),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            sport.label,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? AppColors.textPrimaryDark
+                                  : AppColors.textPrimaryDark
+                                      .withValues(alpha: 0.6),
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: AppColors.cardDark,
+                      selectedColor: sport.color,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: isSelected
+                              ? sport.color
+                              : AppColors.textPrimaryDark
+                                  .withValues(alpha: 0.05),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       onSelected: (selected) {
                         setState(() {
                           if (selected) {
@@ -136,39 +260,59 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 24),
+
                 if (_selectedSports.isNotEmpty) ...[
-                  const Text(
-                    'Skill Levels',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+                  const SizedBox(height: 32),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Skill Levels',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimaryDark,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   ..._selectedSports.map((sport) {
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(14),
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppColors.cardDark,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color:
+                              AppColors.textPrimaryDark.withValues(alpha: 0.05),
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Icon(sport.icon, color: sport.color, size: 20),
-                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: sport.color.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(sport.icon,
+                                    color: sport.color, size: 20),
+                              ),
+                              const SizedBox(width: 12),
                               Text(
                                 sport.label,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.w600),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: AppColors.textPrimaryDark,
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 16),
                           Row(
                             children: SkillLevel.values.map((level) {
                               final isActive = _skillLevels[sport] == level;
@@ -179,18 +323,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(
-                                        horizontal: 3),
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                        horizontal: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12),
                                     decoration: BoxDecoration(
                                       color: isActive
-                                          ? sport.color.withValues(alpha: 0.2)
+                                          ? sport.color
                                           : AppColors.surfaceDark,
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
                                         color: isActive
                                             ? sport.color
-                                            : Colors.white
+                                            : AppColors.textPrimaryDark
                                                 .withValues(alpha: 0.05),
                                       ),
                                     ),
@@ -198,13 +342,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       child: Text(
                                         '${level.emoji} ${level.label}',
                                         style: TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 12,
                                           fontWeight: isActive
                                               ? FontWeight.w700
-                                              : FontWeight.w400,
+                                              : FontWeight.w500,
                                           color: isActive
-                                              ? sport.color
-                                              : Colors.white54,
+                                              ? AppColors.backgroundDark
+                                              : AppColors.textPrimaryDark
+                                                  .withValues(alpha: 0.6),
                                         ),
                                       ),
                                     ),
@@ -218,17 +363,45 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     );
                   }),
                 ],
-                const SizedBox(height: 16),
+                const SizedBox(height: 40),
                 SizedBox(
                   width: double.infinity,
-                  height: 52,
+                  height: 56,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (profile != null) _onSave(profile);
-                    },
-                    child: const Text('Save Changes'),
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            if (_currentProfile != null) {
+                              _onSave(_currentProfile!);
+                            }
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.backgroundDark,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: isLoading
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              color: AppColors.backgroundDark,
+                            ),
+                          )
+                        : const Text(
+                            'Save Changes',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
+                const SizedBox(height: 24),
               ],
             ),
           );

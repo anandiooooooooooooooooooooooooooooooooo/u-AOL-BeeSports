@@ -3,6 +3,7 @@ import 'package:beesports/core/di/injection_container.dart';
 import 'package:beesports/core/router/app_router.dart';
 import 'package:beesports/core/theme/app_theme.dart';
 import 'package:beesports/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:beesports/features/notifications/presentation/bloc/notification_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -24,8 +25,15 @@ class BeeSportsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthBloc>()..add(AuthCheckRequested()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<AuthBloc>()..add(AuthCheckRequested()),
+        ),
+        BlocProvider(
+          create: (_) => sl<NotificationBloc>(),
+        ),
+      ],
       child: Builder(
         builder: (context) {
           final authBloc = context.read<AuthBloc>();
