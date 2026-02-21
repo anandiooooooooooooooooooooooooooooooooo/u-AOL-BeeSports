@@ -75,7 +75,7 @@ class AppRouter {
       return null;
     },
     routes: [
-      // Auth routes (No NavBar)
+      // auth routes
       GoRoute(
         path: '/login',
         builder: (context, state) => LoginScreen(
@@ -108,7 +108,7 @@ class AppRouter {
         },
       ),
 
-      // Profile routes (No NavBar)
+      // profile routes
       GoRoute(
         path: '/profile',
         builder: (context, state) => BlocProvider(
@@ -128,7 +128,7 @@ class AppRouter {
         },
       ),
 
-      // Main application routes (With NavBar)
+      // main application routes
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {

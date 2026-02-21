@@ -12,8 +12,8 @@ class MainScaffold extends StatelessWidget {
     if (location.startsWith('/home')) return 0;
     if (location.startsWith('/lobbies')) return 1;
     if (location.startsWith('/wallet')) return 2;
-    // If we're on some other page that happens to be inside ShellRoute, just highlight Home, or keep track better.
-    return 0; // Default to first tab
+    // handle other pages in shellroute
+    return 0; // default tab
   }
 
   void _onItemTapped(int index, BuildContext context) {
@@ -28,8 +28,8 @@ class MainScaffold extends StatelessWidget {
         context.go('/wallet');
         break;
       case 3:
-        // Profile is specifically excluded from nav bar (meaning the nav bar won't show on profile)
-        // so we push it on top of the current route.
+        // exclude profile from navbar
+        // push over current route
         context.push('/profile');
         break;
     }

@@ -84,7 +84,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // --- SPORT SECTION ---
+                  // sport section
                   const Text(
                     'Select Sport',
                     style: TextStyle(
@@ -150,7 +150,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  // --- DETAILS SECTION ---
+                  // details section
                   const Text(
                     'Lobby Details',
                     style: TextStyle(
@@ -222,7 +222,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  // --- SCHEDULE & LOCATION SECTION ---
+                  // schedule & location section
                   const Text(
                     'Schedule & Duration',
                     style: TextStyle(
@@ -316,7 +316,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
                   ),
                   const SizedBox(height: 32),
 
-                  // --- RULES & PLAYERS SECTION ---
+                  // rules & players section
                   const Text(
                     'Players & Requirements',
                     style: TextStyle(
@@ -440,7 +440,7 @@ class _CreateLobbyScreenState extends State<CreateLobbyScreen> {
 
                   const SizedBox(height: 48),
 
-                  // --- SUBMIT BUTTON ---
+                  // submit button
                   SizedBox(
                     width: double.infinity,
                     height: 56,

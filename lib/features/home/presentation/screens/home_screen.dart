@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header & Profile Card
+              // header & profile card
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 16),
                   Row(
                     children: [
-                      // Notification Bell
+                      // notification bell
                       GestureDetector(
                         onTap: () => context.push('/notifications'),
                         child: Container(
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      // Profile Avatar
+                      // profile avatar
                       GestureDetector(
                         onTap: () => context.push('/profile'),
                         child: Hero(
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 32),
 
-              // Search Bar (Visual only, navigates to lobbies)
+              // search bar
               GestureDetector(
                 onTap: () => context.push('/lobbies'),
                 child: Container(
@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 36),
 
-              // Categories Header
+              // categories header
               const Text(
                 'Explore Sports',
                 style: TextStyle(
@@ -220,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Horizontal Sports List
+              // horizontal sports list
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 36),
 
-              // Quick Actions Header
+              // quick actions header
               const Text(
                 'Quick Actions',
                 style: TextStyle(
@@ -267,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Hero Action - Create Lobby
+              // hero action - create lobby
               GestureDetector(
                 onTap: () => context.push('/lobbies/create'),
                 child: Container(
@@ -290,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Stack(
                     children: [
-                      // Decorative Background Icon
+                      // decorative background icon
                       Positioned(
                         right: -20,
                         bottom: -20,
@@ -349,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Secondary Actions Row
+              // secondary actions row
               Row(
                 children: [
                   Expanded(
@@ -399,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 36),
 
-              // Upcoming Matches Header
+              // upcoming matches header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 12),
 
-              // Upcoming Matches Empty State
+              // upcoming matches empty state
               Container(
                 width: double.infinity,
                 padding:

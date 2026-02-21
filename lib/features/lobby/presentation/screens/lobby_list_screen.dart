@@ -45,7 +45,7 @@ class _LobbyListScreenState extends State<LobbyListScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Custom Header
+            // custom header
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
               child: Row(
@@ -104,7 +104,7 @@ class _LobbyListScreenState extends State<LobbyListScreen> {
               ),
             ),
 
-            // Search Bar (Visual)
+            // search bar
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
               child: Container(
@@ -135,7 +135,7 @@ class _LobbyListScreenState extends State<LobbyListScreen> {
               ),
             ),
 
-            // Sports Filter
+            // sports filter
             Container(
               height: 48,
               margin: const EdgeInsets.only(bottom: 12),
@@ -164,7 +164,7 @@ class _LobbyListScreenState extends State<LobbyListScreen> {
               ),
             ),
 
-            // Lobbies List Area
+            // lobbies list
             Expanded(
               child: BlocBuilder<LobbyListBloc, LobbyListState>(
                 builder: (context, state) {

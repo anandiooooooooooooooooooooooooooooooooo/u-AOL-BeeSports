@@ -99,7 +99,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Avatar Header
+                // avatar header
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
@@ -143,7 +143,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 ),
                 const SizedBox(height: 32),
 
-                // Form Section
+                // form section
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(

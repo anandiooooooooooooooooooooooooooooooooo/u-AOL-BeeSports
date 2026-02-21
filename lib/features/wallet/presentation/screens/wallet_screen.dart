@@ -312,7 +312,7 @@ class _TransactionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isCredit = transaction.isCredit;
     final sign = isCredit ? '+' : '-';
-    // Using light blue for positive, white for negative to fit the theme nicely.
+    // color based on value
     final amountColor =
         isCredit ? AppColors.primary : AppColors.textPrimaryDark;
 
