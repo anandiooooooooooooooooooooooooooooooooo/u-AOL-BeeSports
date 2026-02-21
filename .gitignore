@@ -4,9 +4,9 @@
 *.log
 *.pyc
 *.swp
+*.env
 .buildlog/
 .history
-.env
 
 
 # Flutter repo-specific
